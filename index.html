@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pizzeria Terraço · Forno a Lenha em Quatá - SP</title>
+  
+  <!-- Fonts: Instrument Serif & Work Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            background: 'oklch(0.968 0.016 82.5)',
+            foreground: 'oklch(0.247 0.028 44)',
+            card: 'oklch(0.992 0.008 85)',
+            'card-foreground': 'oklch(0.247 0.028 44)',
+            primary: {
+              DEFAULT: 'oklch(0.52 0.15 36)',
+              hover: 'oklch(0.46 0.145 34)',
+              foreground: 'oklch(0.985 0.012 85)',
+            },
+            secondary: {
+              DEFAULT: 'oklch(0.93 0.035 80)',
+              foreground: 'oklch(0.3 0.035 45)',
+            },
+            muted: {
+              DEFAULT: 'oklch(0.935 0.022 82)',
+              foreground: 'oklch(0.45 0.03 48)',
+            },
+            accent: {
+              DEFAULT: 'oklch(0.83 0.09 78)',
+              foreground: 'oklch(0.28 0.04 45)',
+            },
+            border: 'oklch(0.88 0.028 80)',
+            olive: {
+              DEFAULT: 'oklch(0.42 0.07 150)',
+              foreground: 'oklch(0.97 0.015 85)',
+            },
+            'ink-deep': 'oklch(0.2 0.025 45)',
+          },
+          fontFamily: {
+            sans: ['"Work Sans"', 'sans-serif'],
+            display: ['"Instrument Serif"', 'Georgia', 'serif'],
+          },
+          keyframes: {
+            'hero-rise': {
+              '0%': { opacity: '0', transform: 'translateY(22px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            'hero-fade': {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            }
+          },
+          animation: {
+            'hero-rise': 'hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards',
+            'hero-fade': 'hero-fade 1.2s ease-out forwards',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .paper-grain {
+      background-image:
+        radial-gradient(circle at 20% 10%, rgba(196, 71, 30, 0.08), transparent 45%),
+        radial-gradient(circle at 85% 0%, rgba(47, 93, 58, 0.07), transparent 40%);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .reveal.is-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: oklch(0.968 0.016 82.5);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: oklch(0.88 0.028 80);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: oklch(0.52 0.15 36);
+    }
+  </style>
+</head>
+
+<body class="min-h-screen bg-background text-foreground font-sans antialiased selection:bg-primary/20 selection:text-primary">
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="sticky top-0 z-40 w-full border-b border-border/80 bg-background/85 backdrop-blur-md transition-all">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-5 h-20 lg:px-8">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="group flex items-center gap-3">
+        <div class="grid size-10 place-items-center rounded-full bg-primary text-primary-foreground shadow-sm transition-transform group-hover:scale-105">
+          <i data-lucide="flame" class="size-5"></i>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-display text-2xl font-normal leading-none tracking-tight text-foreground">Terraço</span>
+          <span class="text-[0.65rem] font-semibold tracking-[0.2em] text-primary uppercase">Pizzeria Artesanal</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+        <a href="#a-casa" class="text-foreground/80 hover:text-primary transition-colors">A Casa</a>
+        <a href="#cardapio" class="text-foreground/80 hover:text-primary transition-colors">Cardápio</a>
+        <a href="#galeria" class="text-foreground/80 hover:text-primary transition-colors">Galeria</a>
+        <a href="#avaliacoes" class="text-foreground/80 hover:text-primary transition-colors">Avaliações</a>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-3">
+        <button onclick="openMenuModal()" class="hidden sm:inline-flex items-center gap-2 rounded-full border border-foreground/20 px-4 py-2 text-xs font-semibold hover:bg-foreground/5 transition-colors">
+          <i data-lucide="utensils-crossed" class="size-3.5"></i> Cardápio Completo
+        </button>
+        <button onclick="openReservationModal()" class="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-primary px-5 text-xs font-semibold text-primary-foreground shadow-sm hover:bg-primary-hover transition-all transform hover:-translate-y-0.5">
+          <span>Reservar mesa</span>
+          <i data-lucide="arrow-right" class="size-3.5"></i>
+        </button>
+        
+        <!-- Mobile menu button -->
+        <button onclick="toggleMobileMenu()" class="p-2 text-foreground/80 hover:text-primary md:hidden" aria-label="Abrir Menu">
+          <i data-lucide="menu" class="size-6"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="hidden border-b border-border bg-background px-5 py-4 md:hidden">
+      <div class="flex flex-col gap-4 text-sm font-medium">
+        <a href="#a-casa" onclick="toggleMobileMenu()" class="py-1 text-foreground/80 hover:text-primary">A Casa</a>
+        <a href="#cardapio" onclick="toggleMobileMenu()" class="py-1 text-foreground/80 hover:text-primary">Cardápio</a>
+        <a href="#galeria" onclick="toggleMobileMenu()" class="py-1 text-foreground/80 hover:text-primary">Galeria</a>
+        <a href="#avaliacoes" onclick="toggleMobileMenu()" class="py-1 text-foreground/80 hover:text-primary">Avaliações</a>
+        <div class="pt-2 flex flex-col gap-2">
+          <button onclick="toggleMobileMenu(); openMenuModal()" class="flex w-full items-center justify-center gap-2 rounded-full border border-foreground/20 px-4 py-2.5 text-xs font-semibold">
+            <i data-lucide="utensils-crossed" class="size-4"></i> Ver Cardápio Completo
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="paper-grain relative overflow-hidden">
+      <div class="mx-auto grid max-w-6xl items-center gap-12 px-5 pt-12 pb-16 md:min-h-[calc(100vh-5rem)] md:grid-cols-[1.05fr_0.95fr] md:gap-16 md:py-16 lg:px-8">
+        
+        <!-- Text Column -->
+        <div class="max-w-xl">
+          <p class="animate-hero-rise text-[0.72rem] font-semibold tracking-[0.22em] text-primary uppercase" style="animation-delay: 0ms;">
+            Quatá · SP · Desde sempre na rua 28
+          </p>
+
+          <h1 class="animate-hero-rise mt-5 font-display text-[clamp(3.1rem,8vw,5.6rem)] leading-[0.92] tracking-[-0.02em]" style="animation-delay: 90ms;">
+            Pizza de forno a lenha,
+            <span class="mt-1 block text-primary italic">do jeito de casa.</span>
+          </h1>
+
+          <p class="animate-hero-rise mt-6 max-w-md text-[1.05rem] leading-relaxed text-foreground/75" style="animation-delay: 180ms;">
+            Massa de fermentação lenta, ingredientes frescos e aquele cheirinho de lenha que anuncia: chegou a hora de sentar e ficar.
+          </p>
+
+          <div class="animate-hero-rise mt-8 flex flex-wrap items-center gap-3" style="animation-delay: 260ms;">
+            <button onclick="openReservationModal()" class="inline-flex h-12 items-center gap-2 rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-md transition-all hover:bg-primary-hover hover:shadow-lg transform hover:-translate-y-0.5">
+              Reservar mesa <i data-lucide="arrow-right" class="size-4"></i>
+            </button>
+            <a href="#cardapio" class="inline-flex h-12 items-center rounded-full border border-foreground/20 px-6 text-sm font-semibold transition-colors hover:bg-foreground/5">
+              Ver o cardápio
+            </a>
+          </div>
+
+          <div class="animate-hero-rise mt-8" style="animation-delay: 340ms;">
+            <span class="inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-3.5 py-1.5 text-xs font-medium text-foreground/80 backdrop-blur shadow-sm">
+              <i data-lucide="star" class="size-3.5 fill-amber-500 text-amber-500"></i>
+              <span class="font-semibold text-foreground">4,7</span> no Google
+              <span class="text-muted-foreground">· 89 avaliações</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Media Column -->
+        <div class="relative">
+          <div class="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-[#e9b872] shadow-[0_30px_60px_-30px_rgba(42,29,22,0.45)] md:aspect-[5/6] group">
+            <img 
+              src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=85" 
+              alt="Pizza margherita artesanal saindo do forno a lenha" 
+              class="size-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#2a1d16]/70 via-transparent to-transparent"></div>
+            
+            <div class="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4 text-white">
+              <p class="font-display text-2xl leading-tight drop-shadow-sm">
+                Forno a lenha,<br>mesa cheia.
+              </p>
+              <span class="rounded-full bg-white/20 px-3 py-1 text-[0.68rem] font-semibold tracking-widest uppercase backdrop-blur-md border border-white/20">
+                R$ 20–40 por pessoa
+              </span>
+            </div>
+          </div>
+
+          <!-- Floating Badge -->
+          <div class="animate-hero-fade absolute -bottom-6 -left-4 hidden rounded-2xl border border-border bg-card/95 p-4 shadow-xl backdrop-blur sm:block" style="animation-delay: 600ms;">
+            <p class="flex items-center gap-2 text-sm font-semibold">
+              <span class="size-2.5 rounded-full bg-emerald-600 animate-pulse" aria-hidden="true"></span>
+              Aberto hoje · fecha 23:00
+            </p>
+            <a href="https://maps.google.com" target="_blank" rel="noreferrer" class="mt-1.5 flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors">
+              <i data-lucide="map-pin" class="size-3.5"></i> Jardim Primavera, Quatá
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== A CASA (FORNO) SECTION ==================== -->
+    <section id="a-casa" class="border-y border-border bg-secondary/40 py-20">
+      <div class="mx-auto grid max-w-6xl gap-12 px-5 md:grid-cols-[0.9fr_1.1fr] md:gap-16 lg:px-8">
+        <div class="reveal">
+          <p class="text-[0.72rem] font-semibold tracking-[0.22em] text-primary uppercase">A casa</p>
+          <h2 class="mt-4 font-display text-[clamp(2.2rem,4.2vw,3.4rem)] leading-[1.02]">
+            Três coisas que a gente não abre mão
+          </h2>
+          <p class="mt-5 max-w-sm text-foreground/75 leading-relaxed">
+            No Terraço, ninguém tem pressa. O forno é aceso no fim da tarde e a primeira pizza sai quando a massa está pronta — não antes.
+          </p>
+        </div>
+
+        <ul class="grid gap-8 sm:grid-cols-3">
+          <li class="reveal">
+            <span class="grid size-12 place-items-center rounded-full bg-primary/10 text-primary mb-4">
+              <i data-lucide="flame" class="size-6"></i>
+            </span>
+            <h3 class="text-base font-semibold">Forno a lenha</h3>
+            <p class="mt-2 text-sm leading-relaxed text-foreground/70">
+              Assamos cada pizza em alta temperatura para a borda ficar crocante e o miolo macio.
+            </p>
+          </li>
+
+          <li class="reveal">
+            <span class="grid size-12 place-items-center rounded-full bg-primary/10 text-primary mb-4">
+              <i data-lucide="clock" class="size-6"></i>
+            </span>
+            <h3 class="text-base font-semibold">Fermentação lenta</h3>
+            <p class="mt-2 text-sm leading-relaxed text-foreground/70">
+              A massa descansa horas antes de receber o molho de tomates maduros e o queijo.
+            </p>
+          </li>
+
+          <li class="reveal">
+            <span class="grid size-12 place-items-center rounded-full bg-primary/10 text-primary mb-4">
+              <i data-lucide="utensils-crossed" class="size-6"></i>
+            </span>
+            <h3 class="text-base font-semibold">Cardápio do salão</h3>
+            <p class="mt-2 text-sm leading-relaxed text-foreground/70">
+              Além das pizzas, massas, entradas e bebidas geladas servidas na mesa ou para levar.
+            </p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ==================== CARDÁPIO HIGHLIGHTS SECTION ==================== -->
+    <section id="cardapio" class="py-20">
+      <div class="mx-auto max-w-6xl px-5 lg:px-8">
+        <div class="reveal flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-[0.72rem] font-semibold tracking-[0.22em] text-primary uppercase">Cardápio</p>
+            <h2 class="mt-4 font-display text-[clamp(2.2rem,4.2vw,3.4rem)] leading-none">
+              Para começar, o que sai mais cedo do forno
+            </h2>
+          </div>
+          <button onclick="openMenuModal()" class="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline group">
+            <span>Cardápio completo</span>
+            <i data-lucide="arrow-right" class="size-4 transition-transform group-hover:translate-x-1"></i>
+          </button>
+        </div>
+
+        <!-- Menu Highlights Grid -->
+        <div class="mt-10 grid gap-px overflow-hidden rounded-3xl border border-border bg-border sm:grid-cols-2">
+          
+          <!-- Item 1 -->
+          <article class="reveal flex flex-col gap-3 bg-card p-6 md:p-8 hover:bg-card/80 transition-colors">
+            <div class="flex items-start justify-between gap-4">
+              <h3 class="font-display text-[1.7rem] leading-tight">Margherita da Casa</h3>
+              <span class="rounded-full bg-emerald-100 dark:bg-emerald-950/60 px-2.5 py-1 text-[0.65rem] font-semibold tracking-wider text-emerald-800 dark:text-emerald-300 uppercase">
+                Mais Pedida
+              </span>
+            </div>
+            <p class="text-sm leading-relaxed text-foreground/70">
+              Molho de tomate artesanal, fior di latte, manjericão fresco colhido no dia e azeite extravirgem.
+            </p>
+            <div class="mt-auto pt-4 flex items-center justify-between">
+              <span class="text-base font-semibold tabular-nums text-primary">R$ 48,00</span>
+              <button onclick="quickOrder('Margherita da Casa', 'R$ 48,00')" class="text-xs font-semibold text-foreground/70 hover:text-primary flex items-center gap-1">
+                <i data-lucide="message-circle" class="size-3.5"></i> Pedir
+              </button>
+            </div>
+          </article>
+
+          <!-- Item 2 -->
+          <article class="reveal flex flex-col gap-3 bg-card p-6 md:p-8 hover:bg-card/80 transition-colors">
+            <div class="flex items-start justify-between gap-4">
+              <h3 class="font-display text-[1.7rem] leading-tight">Calabresa com Cebola Roxa</h3>
+              <span class="rounded-full bg-emerald-100 dark:bg-emerald-950/60 px-2.5 py-1 text-[0.65rem] font-semibold tracking-wider text-emerald-800 dark:text-emerald-300 uppercase">
+                Clássica
+              </span>
+            </div>
+            <p class="text-sm leading-relaxed text-foreground/70">
+              Calabresa artesanal fatiada fina, cebola roxa marinada no azeite, azeitonas pretas e orégano fresco.
+            </p>
+            <div class="mt-auto pt-4 flex items-center justify-between">
+              <span class="text-base font-semibold tabular-nums text-primary">R$ 52,00</span>
+              <button onclick="quickOrder('Calabresa com Cebola Roxa', 'R$ 52,00')" class="text-xs font-semibold text-foreground/70 hover:text-primary flex items-center gap-1">
+                <i data-lucide="message-circle" class="size-3.5"></i> Pedir
+              </button>
+            </div>
+          </article>
+
+          <!-- Item 3 -->
+          <article class="reveal flex flex-col gap-3 bg-card p-6 md:p-8 hover:bg-card/80 transition-colors">
+            <div class="flex items-start justify-between gap-4">
+              <h3 class="font-display text-[1.7rem] leading-tight">Quatro Queijos do Salão</h3>
+              <span class="rounded-full bg-amber-100 dark:bg-amber-950/60 px-2.5 py-1 text-[0.65rem] font-semibold tracking-wider text-amber-800 dark:text-amber-300 uppercase">
+                Especial
+              </span>
+            </div>
+            <p class="text-sm leading-relaxed text-foreground/70">
+              Mussarela especial, gorgonzola suave, catupiry original e lascas de parmesão maturado.
+            </p>
+            <div class="mt-auto pt-4 flex items-center justify-between">
+              <span class="text-base font-semibold tabular-nums text-primary">R$ 56,00</span>
+              <button onclick="quickOrder('Quatro Queijos do Salão', 'R$ 56,00')" class="text-xs font-semibold text-foreground/70 hover:text-primary flex items-center gap-1">
+                <i data-lucide="message-circle" class="size-3.5"></i> Pedir
+              </button>
+            </div>
+          </article>
+
+          <!-- Item 4 -->
+          <article class="reveal flex flex-col gap-3 bg-card p-6 md:p-8 hover:bg-card/80 transition-colors">
+            <div class="flex items-start justify-between gap-4">
+              <h3 class="font-display text-[1.7rem] leading-tight">Parma & Rúcula</h3>
+              <span class="rounded-full bg-emerald-100 dark:bg-emerald-950/60 px-2.5 py-1 text-[0.65rem] font-semibold tracking-wider text-emerald-800 dark:text-emerald-300 uppercase">
+                Premium
+              </span>
+            </div>
+            <p class="text-sm leading-relaxed text-foreground/70">
+              Presunto tipo Parma, rúcula fresca, mussarela de búfala e redução suave de vinho tinto.
+            </p>
+            <div class="mt-auto pt-4 flex items-center justify-between">
+              <span class="text-base font-semibold tabular-nums text-primary">R$ 64,00</span>
+              <button onclick="quickOrder('Parma & Rúcula', 'R$ 64,00')" class="text-xs font-semibold text-foreground/70 hover:text-primary flex items-center gap-1">
+                <i data-lucide="message-circle" class="size-3.5"></i> Pedir
+              </button>
+            </div>
+          </article>
+
+        </div>
+
+        <p class="reveal mt-6 text-xs text-muted-foreground flex flex-wrap items-center gap-2">
+          <span>Valores de referência · faixa média de R$ 20–40 por pessoa</span>
+          <span>·</span>
+          <span>Pedidos e entregas via WhatsApp:</span>
+          <a class="underline font-medium hover:text-primary" href="https://wa.me/5518996591885?text=Ol%C3%A1%21+Gostaria+de+fazer+um+pedido." target="_blank" rel="noreferrer">
+            falar com a casa
+          </a>
+        </p>
+      </div>
+    </section>
+
+    <!-- ==================== GALERIA SECTION ==================== -->
+    <section id="galeria" class="py-10">
+      <div class="mx-auto grid max-w-6xl gap-4 px-5 pb-20 md:grid-cols-[1.4fr_0.6fr] lg:px-8">
+        
+        <figure class="reveal relative overflow-hidden rounded-[2rem] group shadow-md">
+          <img 
+            src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1600&q=85" 
+            alt="Salão do Terraço à noite, com mesas iluminadas por velas e o forno ao fundo" 
+            class="aspect-[16/10] w-full object-cover md:aspect-[16/11] transition-transform duration-700 group-hover:scale-105"
+            loading="lazy"
+          >
+          <figcaption class="absolute inset-x-5 bottom-5 rounded-2xl bg-ink-deep/80 px-4 py-3 text-sm text-secondary backdrop-blur-md border border-white/10">
+            Salão acolhedor, luz baixa e o forno sempre aceso.
+          </figcaption>
+        </figure>
+
+        <figure class="reveal relative hidden overflow-hidden rounded-[2rem] md:block group shadow-md">
+          <img 
+            src="https://images.unsplash.com/photo-1579751626657-72bc17010498?auto=format&fit=crop&w=1000&q=85" 
+            alt="Massa de pizza em fermentação lenta" 
+            class="size-full object-cover transition-transform duration-700 group-hover:scale-105"
+            loading="lazy"
+          >
+          <figcaption class="absolute inset-x-5 bottom-5 rounded-2xl bg-ink-deep/80 px-4 py-3 text-sm text-secondary backdrop-blur-md border border-white/10">
+            Massa descansando desde a manhã.
+          </figcaption>
+        </figure>
+
+      </div>
+    </section>
+
+    <!-- ==================== AVALIAÇÕES (REVIEWS) SECTION ==================== -->
+    <section id="avaliacoes" class="bg-ink-deep text-secondary py-20">
+      <div class="reveal mx-auto grid max-w-6xl gap-10 px-5 md:grid-cols-[0.8fr_1.2fr] md:items-center lg:px-8">
+        
+        <div>
+          <p class="text-[0.72rem] font-semibold tracking-[0.22em] text-accent uppercase">Quem já sentou à mesa</p>
+          <div class="mt-5 flex items-end gap-4">
+            <span class="font-display text-[5.5rem] leading-none text-white">4,7</span>
+            <div class="pb-3">
+              <div class="flex gap-1" aria-label="Nota 4,7 de 5">
+                <i data-lucide="star" class="size-5 fill-amber-400 text-amber-400"></i>
+                <i data-lucide="star" class="size-5 fill-amber-400 text-amber-400"></i>
+                <i data-lucide="star" class="size-5 fill-amber-400 text-amber-400"></i>
+                <i data-lucide="star" class="size-5 fill-amber-400 text-amber-400"></i>
+                <i data-lucide="star" class="size-5 fill-amber-400/50 text-amber-400"></i>
+              </div>
+              <p class="mt-1.5 text-sm text-secondary/70">
+                89 avaliações no Google
+              </p>
+            </div>
+          </div>
+          
+          <a href="https://maps.google.com" target="_blank" rel="noreferrer" class="mt-6 inline-flex items-center gap-2 text-sm text-accent hover:underline">
+            Ver no Google Maps <i data-lucide="arrow-right" class="size-4"></i>
+          </a>
+        </div>
+
+        <blockquote class="border-l-2 border-accent/60 pl-6 md:pl-10">
+          <p class="font-display text-[clamp(1.6rem,3vw,2.4rem)] leading-[1.25] text-white">
+            “A pizza chega com a borda crocante e o cheiro de lenha. É o lugar certo para um jantar devagar com quem a gente gosta.”
+          </p>
+          <footer class="mt-5 text-sm text-secondary/60">
+            — resumo das avaliações públicas no Google
+          </footer>
+        </blockquote>
+
+      </div>
+    </section>
+
+    <!-- ==================== RESERVA CTA SECTION ==================== -->
+    <section class="py-20">
+      <div class="mx-auto max-w-6xl px-5 lg:px-8">
+        <div class="reveal relative overflow-hidden rounded-[2rem] border border-border bg-card p-8 md:p-14 shadow-lg">
+          <div aria-hidden="true" class="absolute -right-16 -top-16 size-56 rounded-full bg-accent/25 blur-3xl pointer-events-none"></div>
+          
+          <div class="relative flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+            <div class="max-w-lg">
+              <p class="text-[0.72rem] font-semibold tracking-[0.22em] text-primary uppercase">Reserve a sua mesa</p>
+              <h2 class="mt-4 font-display text-[clamp(2.2rem,4.4vw,3.6rem)] leading-none">
+                Sábado à noite pede mesa reservada.
+              </h2>
+              <p class="mt-4 text-foreground/75 leading-relaxed">
+                Escolha o dia e o horário, deixe seu nome e telefone. A confirmação aparece na hora e você pode acompanhar pelo WhatsApp.
+              </p>
+            </div>
+
+            <div class="flex flex-col gap-3 sm:flex-row">
+              <button onclick="openReservationModal()" class="inline-flex h-12 items-center justify-center rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground hover:bg-primary-hover shadow-md transition-all">
+                Reservar agora
+              </button>
+              <a href="https://wa.me/5518996591885?text=Ol%C3%A1%21+Gostaria+de+fazer+um+pedido+para+entrega." target="_blank" rel="noreferrer" class="inline-flex h-12 items-center justify-center rounded-full border border-foreground/20 px-6 text-sm font-semibold hover:bg-foreground/5 transition-colors">
+                Pedir entrega
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== SITE FOOTER ==================== -->
+  <footer class="border-t border-border bg-card py-12 text-sm text-muted-foreground">
+    <div class="mx-auto flex max-w-6xl flex-col gap-8 px-5 md:flex-row md:items-center md:justify-between lg:px-8">
+      
+      <div class="flex items-center gap-3">
+        <div class="grid size-8 place-items-center rounded-full bg-primary text-primary-foreground">
+          <i data-lucide="flame" class="size-4"></i>
+        </div>
+        <div>
+          <p class="font-display text-lg text-foreground leading-none">Terraço Pizzeria</p>
+          <p class="text-xs text-muted-foreground mt-0.5">Rua 28, Quatá - SP</p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-6 text-xs font-medium">
+        <span>Atendimento: Quarta a Domingo · 18h às 23h</span>
+        <span>WhatsApp: (18) 99659-1885</span>
+      </div>
+
+      <p class="text-xs">
+        © 2026 Pizzeria Terraço. Todos os direitos reservados.
+      </p>
+    </div>
+  </footer>
+
+
+  <!-- ==================== RESERVATION MODAL ==================== -->
+  <div id="reservation-modal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="relative w-full max-w-md rounded-3xl bg-card border border-border p-6 md:p-8 shadow-2xl animate-hero-rise">
+      
+      <button onclick="closeReservationModal()" class="absolute right-5 top-5 p-2 text-muted-foreground hover:text-foreground">
+        <i data-lucide="x" class="size-5"></i>
+      </button>
+
+      <!-- Form View -->
+      <div id="reservation-form-container">
+        <p class="text-[0.7rem] font-semibold tracking-[0.2em] text-primary uppercase">Reserva de Mesa</p>
+        <h3 class="font-display text-2xl text-foreground mt-1">Garanta o seu lugar no Terraço</h3>
+
+        <form id="reservation-form" onsubmit="handleReservationSubmit(event)" class="mt-6 flex flex-col gap-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Nome Completo</label>
+            <input type="text" id="res-name" required placeholder="Seu nome" class="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Data</label>
+              <input type="date" id="res-date" required class="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Horário</label>
+              <select id="res-time" required class="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                <option value="18:30">18:30</option>
+                <option value="19:00">19:00</option>
+                <option value="19:30">19:30</option>
+                <option value="20:00" selected>20:00</option>
+                <option value="20:30">20:30</option>
+                <option value="21:00">21:00</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Pessoas</label>
+              <select id="res-people" required class="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                <option value="2 Pessoas">2 Pessoas</option>
+                <option value="4 Pessoas" selected>4 Pessoas</option>
+                <option value="6 Pessoas">6 Pessoas</option>
+                <option value="8+ Pessoas">8+ Pessoas</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">WhatsApp</label>
+              <input type="tel" id="res-phone" required placeholder="(18) 99659-1885" class="w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+          </div>
+
+          <button type="submit" class="mt-2 w-full rounded-full bg-primary py-3 text-sm font-semibold text-primary-foreground hover:bg-primary-hover shadow-sm transition-colors">
+            Confirmar Reserva via WhatsApp
+          </button>
+        </form>
+      </div>
+
+      <!-- Success Confirmation View -->
+      <div id="reservation-success-container" class="hidden text-center py-6">
+        <div class="mx-auto grid size-16 place-items-center rounded-full bg-emerald-100 text-emerald-600 dark:bg-emerald-950/80 mb-4">
+          <i data-lucide="check-circle-2" class="size-8"></i>
+        </div>
+        <h3 class="font-display text-2xl text-foreground">Mesa Reservada!</h3>
+        <p class="mt-2 text-sm text-foreground/75">
+          Sua solicitação foi preparada. Abrindo o WhatsApp para envio imediato...
+        </p>
+        <button onclick="closeReservationModal()" class="mt-6 w-full rounded-full border border-border bg-card py-2.5 text-sm font-semibold hover:bg-foreground/5">
+          Fechar
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ==================== MENU PREVIEW MODAL ==================== -->
+  <div id="menu-modal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-3xl bg-card border border-border p-6 md:p-8 shadow-2xl animate-hero-rise">
+      
+      <button onclick="closeMenuModal()" class="absolute right-5 top-5 p-2 text-muted-foreground hover:text-foreground">
+        <i data-lucide="x" class="size-5"></i>
+      </button>
+
+      <p class="text-[0.7rem] font-semibold tracking-[0.2em] text-primary uppercase">Nosso Cardápio</p>
+      <h3 class="font-display text-3xl text-foreground mt-1">Pizzas & Especialidades</h3>
+
+      <div class="mt-6 space-y-6">
+        
+        <!-- Categoria 1 -->
+        <div>
+          <h4 class="font-display text-xl text-primary border-b border-border pb-1">Pizzas Tradicionais</h4>
+          <div class="mt-3 space-y-3">
+            <div class="flex justify-between items-baseline">
+              <div>
+                <p class="font-semibold text-sm">Margherita da Casa</p>
+                <p class="text-xs text-muted-foreground">Molho artesanal, fior di latte e manjericão fresco</p>
+              </div>
+              <span class="text-sm font-semibold text-primary">R$ 48,00</span>
+            </div>
+            <div class="flex justify-between items-baseline">
+              <div>
+                <p class="font-semibold text-sm">Calabresa com Cebola Roxa</p>
+                <p class="text-xs text-muted-foreground">Calabresa fatiada, cebola roxa e azeitonas pretas</p>
+              </div>
+              <span class="text-sm font-semibold text-primary">R$ 52,00</span>
+            </div>
+            <div class="flex justify-between items-baseline">
+              <div>
+                <p class="font-semibold text-sm">Mussarela Clássica</p>
+                <p class="text-xs text-muted-foreground">Molho de tomate fresco, mussarela abundante e orégano</p>
+              </div>
+              <span class="text-sm font-semibold text-primary">R$ 44,00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Categoria 2 -->
+        <div>
+          <h4 class="font-display text-xl text-primary border-b border-border pb-1">Especiais do Forno</h4>
+          <div class="mt-3 space-y-3">
+            <div class="flex justify-between items-baseline">
+              <div>
+                <p class="font-semibold text-sm">Quatro Queijos do Salão</p>
+                <p class="text-xs text-muted-foreground">Mussarela, gorgonzola suave, catupiry e parmesão</p>
+              </div>
+              <span class="text-sm font-semibold text-primary">R$ 56,00</span>
+            </div>
+            <div class="flex justify-between items-baseline">
+              <div>
+                <p class="font-semibold text-sm">Parma & Rúcula</p>
+                <p class="text-xs text-muted-foreground">Presunto Parma, rúcula fresca e redução de vinho tinto</p>
+              </div>
+              <span class="text-sm font-semibold text-primary">R$ 64,00</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mt-8 pt-4 border-t border-border flex flex-col sm:flex-row gap-3 items-center justify-between">
+        <p class="text-xs text-muted-foreground">Consulte taxa de entrega para a sua região</p>
+        <a href="https://wa.me/5518996591885?text=Ol%C3%A1%21+Gostaria+de+fazer+um+pedido+pelo+card%C3%A1pio." target="_blank" rel="noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-2.5 text-xs font-semibold text-primary-foreground hover:bg-primary-hover">
+          Pedir pelo WhatsApp
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+  <script>
+    // Inicializa ícones do Lucide
+    lucide.createIcons();
+
+    // Data padrão para o input de reserva
+    document.addEventListener("DOMContentLoaded", () => {
+      const today = new Date().toISOString().split('T')[0];
+      const dateInput = document.getElementById('res-date');
+      if (dateInput) dateInput.value = today;
+    });
+
+    // Toggle Mobile Menu
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    // Modal Reserva
+    function openReservationModal() {
+      document.getElementById('reservation-modal').classList.remove('hidden');
+      document.getElementById('reservation-form-container').classList.remove('hidden');
+      document.getElementById('reservation-success-container').classList.add('hidden');
+    }
+
+    function closeReservationModal() {
+      document.getElementById('reservation-modal').classList.add('hidden');
+    }
+
+    // Submit da Reserva
+    function handleReservationSubmit(event) {
+      event.preventDefault();
+      
+      const name = document.getElementById('res-name').value;
+      const date = document.getElementById('res-date').value;
+      const time = document.getElementById('res-time').value;
+      const people = document.getElementById('res-people').value;
+      const phone = document.getElementById('res-phone').value;
+
+      const message = `Olá! Gostaria de confirmar uma reserva:%0A- *Nome:* ${encodeURIComponent(name)}%0A- *Data:* ${date}%0A- *Horário:* ${time}%0A- *Pessoas:* ${people}%0A- *Contato:* ${encodeURIComponent(phone)}`;
+      
+      document.getElementById('reservation-form-container').classList.add('hidden');
+      document.getElementById('reservation-success-container').classList.remove('hidden');
+
+      setTimeout(() => {
+        window.open(`https://wa.me/5518996591885?text=${message}`, '_blank');
+      }, 1000);
+    }
+
+    // Modal Cardápio
+    function openMenuModal() {
+      document.getElementById('menu-modal').classList.remove('hidden');
+    }
+
+    function closeMenuModal() {
+      document.getElementById('menu-modal').classList.add('hidden');
+    }
+
+    // Pedido Rápido de Pizza
+    function quickOrder(itemName, price) {
+      const message = `Olá! Gostaria de pedir a pizza *${encodeURIComponent(itemName)}* (${price}).`;
+      window.open(`https://wa.me/5518996591885?text=${message}`, '_blank');
+    }
+
+    // Scroll Reveal Animation (Intersection Observer)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-in');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+  </script>
+</body>
+</html>
+
+```
